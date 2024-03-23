@@ -10,7 +10,7 @@ const tools = [
   {
     label: "Conversation",
     icon: MessageSquare,
-    href: "/conversation",
+    href: "/chats",
     color: "text-violet-500",
     bgColor: "bg-violet-500/10",
   },
@@ -63,7 +63,7 @@ const DashboardPage = () => {
             className="p-4 border-black/5 flex items-center justify-between hover:shadow-md transition cursor-pointer"
           >
             <div className="flex items-center gap-x-4">
-              <div className={`p-2 w-fit rounded-md${tool.bgColor}`}>
+              <div className={`p-2 w-fit rounded-md ${tool.bgColor}`}>
                 <tool.icon className={`w-8 h-8 ${tool.color}`} />
               </div>
               <div className="font-semibold">{tool.label}</div>
