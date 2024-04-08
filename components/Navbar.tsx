@@ -22,7 +22,7 @@ const Navbar = () => {
   
   
   return (
-    <div className="flex items-center p-4 border-b-2 shadow-lg">
+    <div className="w-full fixed flex bg-white justify-between md:pr-80 items-center p-4 border-b-2 shadow-lg">
       <div>
         <Sheet>
           <SheetTrigger>
@@ -36,15 +36,16 @@ const Navbar = () => {
           </SheetContent>
         </Sheet>
       </div>
-      <div className="flex w-full justify-center font-bold text-xl">
+      <div className="flex  justify-center font-bold text-xl">
         {" "}
-        <span>Dashboard</span>
+        <span>Work Space</span>
       </div>
-      <div className=" justify-end">
+      <div className="justify-end">
         {" "}
         <UserButton afterSignOutUrl="/" />
       </div>
     </div>
+ 
   );
 };
 
