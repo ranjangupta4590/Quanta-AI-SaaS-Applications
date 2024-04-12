@@ -4,23 +4,31 @@ import Heading from "@/components/Heading";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Code, ArrowUp, ClipboardList } from "lucide-react";
+import { ArrowDownToLine, ArrowUp, ImageIcon, Video } from "lucide-react";
 
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { formSchema } from "./authorize";
+import { amountOptions, formSchema, resolutionOptions } from "./authorize";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import ReactMarkdown from "react-markdown";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card } from "@/components/ui/card";
+import Image from "next/image";
 
-const CodePage = () => {
+const ImagePage = () => {
   const router = useRouter();
   const { user } = useUser();
-  const [copied, setCopied] = useState("Copy");
-  const [messages, setMessages] = useState<any[]>([]);
+  const [images, setImages] = useState<string[]>([]);
+  const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -53,17 +61,15 @@ const CodePage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post("/api/code", {
-        prompt: values.prompt,
-      });
+      setImages([]);
 
-      const botReply = response.data;
+      const response = await axios.post("/api/video", values);
+      const image_url = response.data.map(
+        (image: { url: string }) => image.url
+      );
 
-      setMessages((prevMessages) => [
-        botReply,
-        { role: "user", content: values.prompt },
-        ...prevMessages,
-      ]);
+      setImages(image_url);
+
       form.reset();
     } catch (error) {
       console.error(error);
@@ -72,84 +78,54 @@ const CodePage = () => {
     }
   };
 
+  
+
   return (
     <>
       <div className="flex flex-col h-screen">
-        <div className="flex-grow overflow-y-auto mt-14">
+        <div className="flex-grow overflow-y-auto mt-14 mb-34 space-y-8">
           <Heading
-            title="Code Generation"
-            description="Start Coding with Quanta"
-            icon={Code}
-            iconColor="text-green-500"
-            bgColor="bg-green-700/10"
+            title="Video Generation"
+            description="Generate Video with Quanta AI"
+            icon={Video}
+            iconColor="text-pink-700"
+            bgColor="bg-pink-700/10"
           />
 
-          <div className="space-y-6 mt-4 px-4 lg:px-8 relative z-10">
+          <div className="space-y-6 mt-4 px-4 lg:px-8 relative z-10 mb-24">
             <div className="flex flex-col-reverse gap-y-4 mb-32">
-              {messages.map((message, index) => (
-                <div
-                  key={index}
-                  className={`p-6 w-full flex items-start gap-x-8 flex-col gap-y-3 rounded-lg ${
-                    message.role === "user"
-                      ? "bg-white border border-black/10"
-                      : "bg-muted"
-                  }`}
-                >
-                  <div className="flex items-center gap-2">
-                    {message.role === "user" ? userAvatar() : botAvatar()}
-                    <span className="text-md font-bold ml-2 mt-2">
-                      {message.role === "user" ? "You" : "Quanta"}
-                    </span>
-                  </div>
-                  {/* {message.role === "user" ? userAvatar() : botAvatar()} */}
-                  <div className="flex flex-col w-full relative ">
-                    {/* <span className="text-md font-bold pt-1">
-                    {message.role === "user" ? "You" : "Quanta"}
-                  </span> */}
-                    <ReactMarkdown
-                      components={{
-                        pre: ({ node, ...props }) => (
-                          <div className="relative overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg z-0">
-                            <button
-                              onClick={() => {
-                                navigator.clipboard.writeText(
-                                  props.children.props.children.toString()
-                                );
-                                setCopied("Copied!");
-                                setTimeout(() => setCopied("Copy"), 500);
-                              }}
-                              className="absolute flex  top-2 right-2 bg-gray-400 hover:bg-gray-400 text-gray-800 px-2 py-1/2 gap-1 rounded"
-                            >
-                              <ClipboardList className="h-4 w-4 mt-1" />
-                              {copied}
-                            </button>
-                            <pre {...props} />
-                          </div>
-                        ),
-                        code: ({ node, ...props }) => (
-                          <code
-                            className="bg-black/10 rounded-lg p-1"
-                            {...props}
-                          />
-                        ),
-                      }}
-                      className="text-sm overflow-hidden leading-7"
-                    >
-                      {message.content || ""}
-                    </ReactMarkdown>
-                    {/* <p className="text-sm">{message.content}</p> */}
-                  </div>
-                </div>
-              ))}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8 mx-8">
+            
+                {images.map((src) => (
+                  <Card 
+                    key={src} 
+                    className={`rounded-lg overflow-hidden z-0 relative aspect-square ${hoveredImage === src ? 'opacity-80' : 'opacity-100'}`}
+                    onMouseEnter={() => setHoveredImage(src)}
+                    onMouseLeave={() => setHoveredImage(null)}
+                  >
+                    {hoveredImage === src && (
+                      <div className="absolute inset-0 flex justify-center items-center z-10 m-4">
+                        <button
+                          onClick={() => downloadImage(src)}
+                          className="border-1 flex rounded-md bg-pink-600 text-white p-2"
+                        >
+                          <span>Download</span><ArrowDownToLine  />
+                        </button>
+                      </div>
+                    )}
+                    <Image alt="Image" src={src} fill />
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div className="fixed bottom-0 bg-white w-full flex justify-center  items-end md:pr-80  p-4 z-20">
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="
+
+        <div className="fixed bottom-0 bg-white  w-full flex justify-center  items-end md:pr-80 p-4 z-20 ">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="
               bg-gray-300
                 rounded-lg 
                 border-2
@@ -159,44 +135,103 @@ const CodePage = () => {
                 px-3 
                 md:px-6 
                 focus-within:shadow-sm
-                flex flex-row
+                flex flex-col
                 gap-2
                 justify-between
                 h-full
                 z-10
+                md:flex-col
               "
-          >
-            <FormField
-              name="prompt"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl className="m-0 p-0">
-                    <textarea
-                      className="w-full justify-center bg-gray-300 border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent resize-none"
-                      disabled={isLoading}
-                      placeholder="Enter your prompt..."
-                      {...field}
-                    />
-                  </FormControl>
-                </FormItem>
-              )}
-            />
-            <div className=" flex justify-center">
-              <Button
-                className=" p-3 "
-                type="submit"
-                disabled={isLoading}
-                size="icon"
-              >
-                {/* Generate */}
-                <ArrowUp />
-              </Button>
-            </div>
-          </form>
-        </Form>
+            >
+              <FormField
+                name="prompt"
+                render={({ field }) => (
+                  <FormItem className="w-full h-9">
+                    <FormControl className="m-0 p-0">
+                      <textarea
+                        className="w-full justify-center bg-gray-300 border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent resize-none"
+                        disabled={isLoading}
+                        placeholder="Enter your prompt..."
+                        {...field}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+              {/* <div className=" md:flex space-y-2 md:justify-end "> */}
+              <div className=" grid grid-cols-1 sm:grid-cols-3 gap-2 ">
+                <FormField
+                  control={form.control}
+                  name="amount"
+                  render={({ field }) => (
+                    <FormItem className="">
+                      <Select
+                        disabled={isLoading}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue defaultValue={field.value} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {amountOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="resolution"
+                  render={({ field }) => (
+                    <FormItem className="">
+                      <Select
+                        disabled={isLoading}
+                        onValueChange={field.onChange}
+                        value={field.value}
+                        defaultValue={field.value}
+                      >
+                        <FormControl>
+                          <SelectTrigger>
+                            <SelectValue defaultValue={field.value} />
+                          </SelectTrigger>
+                        </FormControl>
+                        <SelectContent>
+                          {resolutionOptions.map((option) => (
+                            <SelectItem key={option.value} value={option.value}>
+                              {option.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormItem>
+                  )}
+                />
+
+                <Button
+                  className=" p-3 justify-center w-full "
+                  type="submit"
+                  disabled={isLoading}
+                  size="icon"
+                >
+                  Generate
+                  {/* <ArrowUp /> */}
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </div>
       </div>
     </>
   );
 };
 
-export default CodePage;
+export default ImagePage;

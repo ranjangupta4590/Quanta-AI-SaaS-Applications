@@ -22,7 +22,7 @@ const Navbar = () => {
   
   
   return (
-    <div className="w-full fixed flex bg-white justify-between md:pr-80 items-center p-3 border-b-2 shadow-lg">
+    <div className="w-full fixed flex bg-white justify-between md:pr-80 items-center p-3 border-b-2 shadow-lg z-30">
       <div>
         <Sheet>
           <SheetTrigger>
