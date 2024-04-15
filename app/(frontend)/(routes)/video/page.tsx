@@ -4,30 +4,21 @@ import Heading from "@/components/Heading";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowDownToLine, ArrowUp, ImageIcon, Video } from "lucide-react";
+import { ArrowUp, Video } from "lucide-react";
 
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { amountOptions, formSchema, resolutionOptions } from "./authorize";
+import { formSchema } from "./authorize";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Card } from "@/components/ui/card";
-import Image from "next/image";
 
-const ImagePage = () => {
+const VideoPage = () => {
   const router = useRouter();
   const { user } = useUser();
-  const [images, setImages] = useState<string[]>([]);
+  const [video, setVideo] = useState<string[]>([]);
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -61,14 +52,14 @@ const ImagePage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setImages([]);
+      setVideo([]);
 
       const response = await axios.post("/api/video", values);
       const image_url = response.data.map(
         (image: { url: string }) => image.url
       );
 
-      setImages(image_url);
+      setVideo([response.data[0]]);
 
       form.reset();
     } catch (error) {
@@ -78,75 +69,53 @@ const ImagePage = () => {
     }
   };
 
-  
-
   return (
     <>
       <div className="flex flex-col h-screen">
-        <div className="flex-grow overflow-y-auto mt-14 mb-34 space-y-8">
+        <div className="flex-grow overflow-y-auto mt-14 mb-34  z-20">
           <Heading
             title="Video Generation"
             description="Generate Video with Quanta AI"
             icon={Video}
-            iconColor="text-pink-700"
-            bgColor="bg-pink-700/10"
+            iconColor="text-orange-700"
+            bgColor="bg-orange-700/10"
           />
 
-          <div className="space-y-6 mt-4 px-4 lg:px-8 relative z-10 mb-24">
-            <div className="flex flex-col-reverse gap-y-4 mb-32">
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8 mx-8">
-            
-                {images.map((src) => (
-                  <Card 
-                    key={src} 
-                    className={`rounded-lg overflow-hidden z-0 relative aspect-square ${hoveredImage === src ? 'opacity-80' : 'opacity-100'}`}
-                    onMouseEnter={() => setHoveredImage(src)}
-                    onMouseLeave={() => setHoveredImage(null)}
-                  >
-                    {hoveredImage === src && (
-                      <div className="absolute inset-0 flex justify-center items-center z-10 m-4">
-                        <button
-                          onClick={() => downloadImage(src)}
-                          className="border-1 flex rounded-md bg-pink-600 text-white p-2"
-                        >
-                          <span>Download</span><ArrowDownToLine  />
-                        </button>
-                      </div>
-                    )}
-                    <Image alt="Image" src={src} fill />
-                  </Card>
-                ))}
-              </div>
-            </div>
+          <div className="mt-4 px-4 lg:px-8 ">
+            <video
+              className="w-full mt-8 lg:mb-32  rounded-lg border-black"
+              controls
+              autoPlay
+            >
+              {/* <source src={video}/> */}
+            </video>
           </div>
         </div>
-
-        <div className="fixed bottom-0 bg-white  w-full flex justify-center  items-end md:pr-80 p-4 z-20 ">
+        <div className="fixed bottom-0 bg-white w-full flex justify-center  items-end md:pr-80  p-4 z-20">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
               className="
-              bg-gray-300
-                rounded-lg 
-                border-2
-                border-gray-500
-                w-full 
-                p-2
-                px-3 
-                md:px-6 
-                focus-within:shadow-sm
-                flex flex-col
-                gap-2
-                justify-between
-                h-full
-                z-10
-                md:flex-col
-              "
+                bg-gray-300
+                  rounded-lg 
+                  border-2
+                  border-gray-500
+                  w-full 
+                  p-2
+                  px-3 
+                  md:px-6 
+                  focus-within:shadow-sm
+                  flex flex-row
+                  gap-2
+                  justify-between
+                  h-full
+                  z-10
+                "
             >
               <FormField
                 name="prompt"
                 render={({ field }) => (
-                  <FormItem className="w-full h-9">
+                  <FormItem className="w-full">
                     <FormControl className="m-0 p-0">
                       <textarea
                         className="w-full justify-center bg-gray-300 border-0 outline-none focus-visible:ring-0 focus-visible:ring-transparent resize-none"
@@ -158,72 +127,15 @@ const ImagePage = () => {
                   </FormItem>
                 )}
               />
-              {/* <div className=" md:flex space-y-2 md:justify-end "> */}
-              <div className=" grid grid-cols-1 sm:grid-cols-3 gap-2 ">
-                <FormField
-                  control={form.control}
-                  name="amount"
-                  render={({ field }) => (
-                    <FormItem className="">
-                      <Select
-                        disabled={isLoading}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue defaultValue={field.value} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {amountOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="resolution"
-                  render={({ field }) => (
-                    <FormItem className="">
-                      <Select
-                        disabled={isLoading}
-                        onValueChange={field.onChange}
-                        value={field.value}
-                        defaultValue={field.value}
-                      >
-                        <FormControl>
-                          <SelectTrigger>
-                            <SelectValue defaultValue={field.value} />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          {resolutionOptions.map((option) => (
-                            <SelectItem key={option.value} value={option.value}>
-                              {option.label}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </FormItem>
-                  )}
-                />
-
+              <div className=" flex justify-center">
                 <Button
-                  className=" p-3 justify-center w-full "
+                  className=" p-3 "
                   type="submit"
                   disabled={isLoading}
                   size="icon"
                 >
-                  Generate
-                  {/* <ArrowUp /> */}
+                  {/* Generate */}
+                  <ArrowUp />
                 </Button>
               </div>
             </form>
@@ -234,4 +146,4 @@ const ImagePage = () => {
   );
 };
 
-export default ImagePage;
+export default VideoPage;
