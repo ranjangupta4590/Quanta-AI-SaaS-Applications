@@ -5,6 +5,7 @@ import { Button } from "./ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
 import Sidebar from "./Sidebar";
 import { useEffect, useState } from "react";
+import { getApiLimitCount } from "@/lib/apiLimit";
 
 
 
@@ -20,6 +21,7 @@ const Navbar = () => {
     return null;
   }
   
+  // const apiLimitCount= await getApiLimitCount();
   
   return (
     <div className="w-full fixed flex bg-white justify-between md:pr-80 items-center p-3 border-b-2 shadow-lg">
