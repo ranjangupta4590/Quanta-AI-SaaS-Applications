@@ -8,6 +8,7 @@ import {
   Settings,
   VideoIcon,
   Zap,
+  Sparkles  
 } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
@@ -17,6 +18,7 @@ import { Progress } from "@/components/ui/progress";
 
 import MAX_FREE_LIMIT from "@/lib/apiLimit";
 import { Button } from "./ui/button";
+import { useProModal } from "@/hooks/proModal";
 
 const routes = [
   {
@@ -68,6 +70,7 @@ interface SidebarProps {
 
 const Sidebar = ({ apiLimitCount = 0 }: SidebarProps) => {
   const activePath = usePathname();
+  const proModal=useProModal();
 
   const [isMounted, setIsMounted] = useState(false);
 
@@ -119,9 +122,10 @@ const Sidebar = ({ apiLimitCount = 0 }: SidebarProps) => {
                 value={(apiLimitCount / MAX_FREE_LIMIT) * 100}
               />
             </div>
-            <Button className="w-full" variant="premium">
-              Pro Modal
-              <Zap className="w-4 h-4 ml-2 fill-white" />
+            <Button onClick={proModal.onOpen} className="w-full" variant="premium">
+            Upgrade to Plus
+              <Sparkles   className="w-4 h-4 ml-2 fill-white" />
+              {/* <Zap className="w-4 h-4 ml-2 fill-white" /> */}
             </Button>
           </CardContent>
         </Card>

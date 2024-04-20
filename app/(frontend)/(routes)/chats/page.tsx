@@ -15,10 +15,14 @@ import { useState } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { useProModal } from "@/hooks/proModal";
+import Loading from "@/components/ui/Loading";
 
 const Chats = () => {
   const router = useRouter();
   const { user } = useUser();
+  const proModal = useProModal();
+  
   const [messages, setMessages] = useState<any[]>([]);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -58,13 +62,16 @@ const Chats = () => {
 
       const botReply = response.data;
 
-      setMessages((prevMessages) => [
+      setMessages((messages) => [
         botReply,
         { role: "user", content: values.prompt },
-        ...prevMessages,
+        ...messages,
       ]);
       form.reset();
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
       console.error(error);
     } finally {
       router.refresh();
@@ -151,8 +158,7 @@ const Chats = () => {
                 disabled={isLoading}
                 size="icon"
               >
-                {/* Generate */}
-                <ArrowUp />
+                {isLoading ? <Loading /> : <ArrowUp />}
               </Button>
             </div>
           </form>

@@ -14,10 +14,13 @@ import { useState } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
+import { useProModal } from "@/hooks/proModal";
 
 const VideoPage = () => {
   const router = useRouter();
   const { user } = useUser();
+  const proModal = useProModal();
+  
   const [video, setVideo] = useState<string[]>([]);
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
@@ -62,7 +65,10 @@ const VideoPage = () => {
       setVideo([response.data[0]]);
 
       form.reset();
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
       console.error(error);
     } finally {
       router.refresh();
@@ -134,8 +140,7 @@ const VideoPage = () => {
                   disabled={isLoading}
                   size="icon"
                 >
-                  {/* Generate */}
-                  <ArrowUp />
+                  {isLoading?<span className="text-white">...Loading</span>:<span className="text-white">Generate</span>}
                 </Button>
               </div>
             </form>

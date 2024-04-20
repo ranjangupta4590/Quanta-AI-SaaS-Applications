@@ -30,9 +30,9 @@ export async function POST(req:Request){
         }
         
         const freeTrial = await checkApiLimit();
-        const isPro = await checkSubscription();
+        // const isPro = await checkSubscription();
     
-        if (!freeTrial && !isPro) {
+        if (!freeTrial) {
           return new NextResponse("Free trial has expired. Please upgrade to pro.", { status: 403 });
         }
         
@@ -50,9 +50,9 @@ export async function POST(req:Request){
               ],
         });
         
-        if (!isPro) {
-            await incrementApiLimit();
-        }
+        await incrementApiLimit();
+        // if (!isPro) {
+        // }
         return NextResponse.json(response.choices[0].message);
     } catch (error) {
         console.log('[CONVERSATION_ERROR',error);

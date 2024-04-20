@@ -23,10 +23,13 @@ import {
 } from "@/components/ui/select";
 import { Card } from "@/components/ui/card";
 import Image from "next/image";
+import { useProModal } from "@/hooks/proModal";
 
 const ImagePage = () => {
   const router = useRouter();
   const { user } = useUser();
+  const proModal = useProModal();
+  
   const [images, setImages] = useState<string[]>([]);
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
@@ -73,7 +76,10 @@ const ImagePage = () => {
       setImages(image_url);
 
       form.reset();
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
       console.error(error);
     } finally {
       router.refresh();
@@ -238,7 +244,8 @@ const ImagePage = () => {
                   disabled={isLoading}
                   size="icon"
                 >
-                  Generate
+                  
+                  {isLoading?<span className="text-white">...Loading</span>:<span className="text-white">Generate</span>}
                   {/* <ArrowUp /> */}
                 </Button>
               </div>

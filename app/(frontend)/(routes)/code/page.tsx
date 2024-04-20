@@ -15,10 +15,14 @@ import axios from "axios";
 import { useUser } from "@clerk/nextjs";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import ReactMarkdown from "react-markdown";
+import Loading from "@/components/ui/Loading";
+import { useProModal } from "@/hooks/proModal";
 
 const CodePage = () => {
   const router = useRouter();
   const { user } = useUser();
+  const proModal = useProModal();
+  
   const [copied, setCopied] = useState("Copy");
   const [messages, setMessages] = useState<any[]>([]);
 
@@ -65,7 +69,10 @@ const CodePage = () => {
         ...prevMessages,
       ]);
       form.reset();
-    } catch (error) {
+    } catch (error: any) {
+      if (error?.response?.status === 403) {
+        proModal.onOpen();
+      }
       console.error(error);
     } finally {
       router.refresh();
@@ -188,8 +195,7 @@ const CodePage = () => {
                 disabled={isLoading}
                 size="icon"
               >
-                {/* Generate */}
-                <ArrowUp />
+                {isLoading?<Loading/>:<ArrowUp />}
               </Button>
             </div>
           </form>
