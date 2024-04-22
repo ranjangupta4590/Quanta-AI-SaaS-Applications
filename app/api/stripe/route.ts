@@ -15,38 +15,41 @@ try {
     if(!user || !userId) return new NextResponse('Unauthorized User',{status:401});
     
     const userSubscription=  await prismaDB.userSubscription.findUnique({where: {userId}});
-    if(userSubscription && userSubscription.striprCustomerId){
-        const srtipeSession=await stripe.billingPortal.sessions.create({
-            customer: userSubscription.striprCustomerId,
+    
+    if(userSubscription && userSubscription.stripeCustomerId){
+        
+        const stripeSession=await stripe.billingPortal.sessions.create({
+            customer: userSubscription.stripeCustomerId,
             return_url:settingUrl
         });
         
-        return new NextResponse(JSON.stringify({url :srtipeSession.url}));
+        return new NextResponse(JSON.stringify({url :stripeSession.url}));
     }
     
-    const srtipeSession=await stripe.checkout.sessions.create({
+    const stripeSession=await stripe.checkout.sessions.create({
         success_url:settingUrl,
         cancel_url:settingUrl,
         payment_method_types:['card'],
+        mode: 'subscription',
         billing_address_collection:"auto",
         customer_email:user.emailAddresses[0].emailAddress,
         line_items: [
-        {
-            price_data:{
-                currency:"INR",
-                product_data:{
-                    name:"Quanta Plus",
-                    description:"Access to all features of Quanta AI with unlimited Generations",
+            {
+                price_data:{
+                    currency:"USD",
+                    product_data:{
+                        name:"Quanta Plus",
+                        description:"Access to all features of Quanta AI with unlimited Generations",
+                    },
+                    unit_amount:1000, // INR per month
+                    recurring: {interval:"month"},
                 },
-                unit_amount:1000, // INR per month
-                recurring: {interval:"month"}
+                quantity:1,
             },
-            quantity:1,
-        },
         ],
         metadata:{userId,}
     });
-    return new NextResponse(JSON.stringify({url :srtipeSession.url}));
+    return new NextResponse(JSON.stringify({url :stripeSession.url}));
     
 } catch (error) {
     console.log("[STRIPE_ERROR]",error)
