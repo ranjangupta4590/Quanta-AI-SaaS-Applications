@@ -23,6 +23,7 @@ import { Card } from "./card";
 import { Button } from "./button";
 import axios from "axios";
 import { useState } from "react";
+import { Loader } from "./Loading";
 
 const tools = [
   {
@@ -80,25 +81,52 @@ const ProModal = () => {
           <DialogTitle className="flex justify-center items-center flex-col gap-y-4 pb-2">
             Upgrade to Quanta Plus !
           </DialogTitle>
-          <DialogDescription>
-            {tools.map((item, index) => (
-              <Card
-                key={index}
-                className="p-3  border-black/5 flex items-center justify-between m-2"
-              >
-                <div className="flex items-center gap-x-4">
-                  <div className={`${item.bgColor} p-2 w-fit rounded-md`}>
-                    <item.icon className={`${item.color} w-6 h-6 `} />
+          {/* <DialogDescription>
+              {tools.map((item, index) => (
+                <Card
+                  key={index}
+                  className="p-3  border-black/5 flex items-center justify-between m-2"
+                >
+                  <div className="flex items-center gap-x-4">
+                    <div className={`${item.bgColor} p-2 w-fit rounded-md`}>
+                      <item.icon className={`${item.color} w-6 h-6 `} />
+                    </div>
+                    <div className="font-semibold text-sm">{item.label}</div>
                   </div>
-                  <div className="font-semibold text-sm">{item.label}</div>
-                </div>
-                <Check className="w-5 h-5 text-primary" />
-              </Card>
-            ))}
+                  <Check className="w-5 h-5 text-primary" />
+                </Card>
+              ))}
+            </DialogDescription> */}
+
+          <DialogDescription >
+            {loading ? (
+               <div className="flex justify-center items-center h-48">
+               <Loader />
+             </div>
+            ) : (
+              tools.map((item, index) => (
+                <Card
+                  key={index}
+                  className="p-3  border-black/5 flex items-center justify-between m-2"
+                >
+                  <div className="flex items-center gap-x-4">
+                    <div className={`${item.bgColor} p-2 w-fit rounded-md`}>
+                      <item.icon className={`${item.color} w-6 h-6 `} />
+                    </div>
+                    <div className="font-semibold text-sm">{item.label}</div>
+                  </div>
+                  <Check className="w-5 h-5 text-primary" />
+                </Card>
+              ))
+            )}
           </DialogDescription>
         </DialogHeader>
         <DialogFooter>
-          <Button onClick={onSubscribe} className="w-full hover:opacity-40" variant="premium">
+          <Button
+            onClick={onSubscribe}
+            className="w-full hover:opacity-40"
+            variant="premium"
+          >
             Upgrade to Plus
             <Sparkles className="w-4 h-4 ml-2 fill-white" />
             {/* <Zap className="w-4 h-4 ml-2 fill-white" /> */}
