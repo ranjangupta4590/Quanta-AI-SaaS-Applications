@@ -115,7 +115,7 @@ const Chats = () => {
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 bg-white  w-full flex justify-center  items-end md:pr-80  p-4">
+      <div className="fixed bottom-0 bg-white  w-full flex justify-center  items-end md:pr-80 p-3">
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
@@ -124,7 +124,8 @@ const Chats = () => {
                 rounded-lg 
                 border-2
                 border-gray-500
-                w-full 
+                w-full
+                mr-16
                 p-2
                 px-3 
                 md:px-6 

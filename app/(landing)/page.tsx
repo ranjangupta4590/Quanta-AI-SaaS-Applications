@@ -1,12 +1,16 @@
-import { Button } from "@/components/ui/button";
-import Link from "next/Link";
+import LandingHome from "@/components/LandingHome";
+import LandingNavbar from "@/components/LandingNavbar";
+import LandingTestimonials from "@/components/LandingTestimonials";
+
 
 export default function Landing() {
   return (
   <>
-    <p className="text-2xl text-green-500">Landing Page</p>
-    <Link href='/login'><Button className="bg-blue-600">Login</Button></Link>
-    <Link href='/signup'><Button className="bg-blue-600">Register</Button></Link>
-  </>
+    <div className="h-full">
+      <LandingNavbar/>
+      <LandingHome/>
+      <LandingTestimonials/>
+    </div>
+   </>
   );
 }

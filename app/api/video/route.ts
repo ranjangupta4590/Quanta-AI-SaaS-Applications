@@ -34,12 +34,12 @@ export async function POST(req:Request){
          return new  NextResponse(' Prompt are required',{ status:400});  
         }
         
-        // const freeTrial = await checkApiLimit();
-        // const isPro = await checkSubscription();
+        const freeTrial = await checkApiLimit();
+        const isPro = await checkSubscription();
     
-        // if (!freeTrial && !isPro) {
-        //   return new NextResponse("Free trial has expired. Please upgrade to pro.", { status: 403 });
-        // }
+        if (!freeTrial && !isPro) {
+          return new NextResponse("Free trial has expired. Please upgrade to pro.", { status: 403 });
+        }
         
         const response = await openai.images.generate({
           // model: "dall-e-3",
@@ -51,9 +51,10 @@ export async function POST(req:Request){
           // size: '1024x1024',
         });
         
-        // if (!isPro) {
-        //     await incrementApiLimit();
-        // }
+        if (!isPro) {
+            await incrementApiLimit();
+        }
+        
         return NextResponse.json(response.data);
     } catch (error) {
         console.log('[IMAGE_GENERATION_ERROR',error);

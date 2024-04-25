@@ -66,9 +66,10 @@ const routes = [
 
 interface SidebarProps {
   apiLimitCount: number;
+  isPro:boolean;
 }
 
-const Sidebar = ({ apiLimitCount = 0 }: SidebarProps) => {
+const Sidebar = ({ apiLimitCount = 0 ,isPro=false}: SidebarProps) => {
   const activePath = usePathname();
   const proModal=useProModal();
 
@@ -81,6 +82,8 @@ const Sidebar = ({ apiLimitCount = 0 }: SidebarProps) => {
   if (!isMounted) {
     return null;
   }
+  
+  if(isPro)return null;
 
   return (
   <>

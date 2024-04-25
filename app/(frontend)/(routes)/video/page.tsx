@@ -33,25 +33,6 @@ const VideoPage = () => {
 
   const isLoading = form.formState.isSubmitting;
 
-  const userAvatar = () => {
-    return (
-      <div className="h-5 w-5 flex">
-        <Avatar className="h-8 w-8">
-          <AvatarImage src={user?.imageUrl} alt="User/img" />
-        </Avatar>
-      </div>
-    );
-  };
-
-  const botAvatar = () => {
-    return (
-      <div className="h-5 w-5 flex">
-        <Avatar className="h-8 w-8">
-          <AvatarImage src="bot.jpg" alt="Bot/img" />
-        </Avatar>
-      </div>
-    );
-  };
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
@@ -87,14 +68,15 @@ const VideoPage = () => {
             bgColor="bg-orange-700/10"
           />
 
-          <div className="mt-4 px-4 lg:px-8 ">
-            <video
+          <div className="flex mt-4 px-4 lg:px-8 justify-center items-center ">
+            {/* <video
               className="w-full mt-8 lg:mb-32  rounded-lg border-black"
               controls
               autoPlay
             >
-              {/* <source src={video}/> */}
-            </video>
+              <source src={video}/> 
+            </video> */}
+            <p className="text-black">API Key is not working</p>
           </div>
         </div>
         <div className="fixed bottom-0 bg-white w-full flex justify-center  items-end md:pr-80  p-4 z-20">
@@ -107,6 +89,7 @@ const VideoPage = () => {
                   border-2
                   border-gray-500
                   w-full 
+                  mr-16
                   p-2
                   px-3 
                   md:px-6 
@@ -135,12 +118,12 @@ const VideoPage = () => {
               />
               <div className=" flex justify-center">
                 <Button
-                  className=" p-3 "
+                  className=" p-3 w-full"
                   type="submit"
                   disabled={isLoading}
                   size="icon"
                 >
-                  {isLoading?<span className="text-white">...Loading</span>:<span className="text-white">Generate</span>}
+                  {isLoading?<p className="text-white">Loading...</p>:<p className="text-white">Generate</p>}
                 </Button>
               </div>
             </form>

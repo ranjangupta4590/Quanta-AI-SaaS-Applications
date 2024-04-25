@@ -162,6 +162,7 @@ const CodePage = () => {
                 border-2
                 border-gray-500
                 w-full 
+                mr-16
                 p-2
                 px-3 
                 md:px-6 
