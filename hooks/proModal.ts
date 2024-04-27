@@ -12,3 +12,16 @@ export const useProModal =create<useProModalStore>((set)=>({
     onClose:()=> set({isOpen:false}),
     
 }));
+
+interface usePricingModalStore{
+    isOpen:boolean;
+    onOpen:()=>void;
+    onClose:()=>void;
+}
+
+export const usePricingModal =create<usePricingModalStore>((set)=>({
+    isOpen:true,
+    onOpen:()=> set({isOpen:true}),
+    onClose:()=> set({isOpen:false}),
+    
+}));

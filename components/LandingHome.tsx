@@ -4,9 +4,12 @@ import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
 import TypewriterComponent from "typewriter-effect";
 import { Button } from "./ui/button";
+import { Zap } from "lucide-react";
+import { usePricingModal,  } from "@/hooks/proModal";
 
 const LandingHome = () => {
   const { isSignedIn } = useAuth();
+  const priceModal = usePricingModal();
 
   return (
     <div className="text-white font-bold py-36 text-center space-y-6">
@@ -42,17 +45,22 @@ const LandingHome = () => {
         Create content using Qunata AI 10x faster and with more accuracy.
       </div>
       <div className="space-y-10 py-20">
-        <Link href="#pricing">
-          <Button className=" mr-4 md:text-lg p-4 md:p-6 bg-blue-500 hover:bg-blue-700 rounded-md font-semibold">
+      
+        {/* <Link href="#pricing"> */}
+          <Button
+            onClick={priceModal.onOpen}
+            className=" mr-4 md:text-lg p-4 md:p-6 bg-blue-500 hover:bg-blue-700 rounded-md font-semibold"
+          >
             View Pricing
           </Button>
-        </Link>
+        {/* </Link> */}
+        
         <Link href="/signup">
           <Button
             variant="premium"
             className="md:text-lg p-4 md:p-6 rounded-md font-semibold"
           >
-            Buy Plus
+            Buy Plus <Zap className="w-4 h-6 ml-1 fill-white" />
           </Button>
         </Link>
       </div>
