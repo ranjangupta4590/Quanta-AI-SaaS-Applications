@@ -26,6 +26,7 @@ try {
         return new NextResponse(JSON.stringify({url :stripeSession.url}));
     }
     
+    
     const stripeSession=await stripe.checkout.sessions.create({
         success_url:settingUrl,
         cancel_url:settingUrl,
@@ -41,7 +42,7 @@ try {
                         name:"Quanta Plus",
                         description:"Access to all features of Quanta AI with unlimited Generations",
                     },
-                    unit_amount:1000*100, // INR per month
+                    unit_amount:199*100, // INR per month
                     recurring: {interval:"month"},
                 },
                 quantity:1,

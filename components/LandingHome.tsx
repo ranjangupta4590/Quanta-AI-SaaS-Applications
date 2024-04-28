@@ -6,6 +6,7 @@ import TypewriterComponent from "typewriter-effect";
 import { Button } from "./ui/button";
 import { Zap } from "lucide-react";
 import { usePricingModal,  } from "@/hooks/proModal";
+import Image from "next/image";
 
 const LandingHome = () => {
   const { isSignedIn } = useAuth();
@@ -44,7 +45,7 @@ const LandingHome = () => {
       <div className="text-sm md:text-xl font-semibold text-zinc-400">
         Create content using Qunata AI 10x faster and with more accuracy.
       </div>
-      <div className="space-y-10 py-20">
+      <div className="space-y-10 py-10">
       
         {/* <Link href="#pricing"> */}
           <Button
@@ -63,6 +64,10 @@ const LandingHome = () => {
             Buy Plus <Zap className="w-4 h-6 ml-1 fill-white" />
           </Button>
         </Link>
+      </div>
+      
+      <div className="flex w-full justify-center">
+        <Image src='/features.svg' alt="feature/svg" width='800' height='500'/>
       </div>
     </div>
   );

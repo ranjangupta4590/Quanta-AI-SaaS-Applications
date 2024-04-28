@@ -12,7 +12,9 @@ import { Button } from "./ui/button";
 import axios from "axios";
 import { useState } from "react";
 import Loading, { Loader } from "./ui/Loading";
-import { Sparkles, Check, X } from "lucide-react";
+import { Sparkles, Check, X, IndianRupee } from "lucide-react";
+import { useAuth } from "@clerk/nextjs";
+import Link from "next/link";
 
 const plans = [
   {
@@ -30,7 +32,7 @@ const plans = [
   },
   {
     title: "Startup",
-    price: "$19/mo",
+    price: "₹199/mo",
     visits: "Everything in Free",
     features: [
       //   "20,000 tokens",
@@ -44,7 +46,7 @@ const plans = [
   },
   {
     title: "Premium",
-    price: "$49/mo",
+    price: "₹399/mo",
     visits: "Everything in Startup",
     features: [
       "Access to our most capable model generation.",
@@ -56,7 +58,7 @@ const plans = [
   },
   {
     title: "Annual",
-    price: "$399/year",
+    price: "₹1499/year",
     visits: "Everything in Premium",
     features: [
       "Access to our most capable model generation.",
@@ -69,18 +71,19 @@ const plans = [
 ];
 
 const PricingPage = () => {
+  const { isSignedIn } = useAuth();
   const priceModal = usePricingModal();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(-1);
 
   const onSubscribe = async () => {
     try {
-      setLoading(true);
+      setLoading(1);
       const response = axios.get("/api/stripe");
       window.location.href = (await response).data.url;
     } catch (error) {
       console.log(error, "STRIPE_CLIENT_ERROR");
     } finally {
-      setLoading(false);
+      setLoading(-1);
     }
   };
 
@@ -100,9 +103,12 @@ const PricingPage = () => {
                   className=" border-2 rounded-md border-purple-600 min-h-[200px] p-3 text-center transition-all duration-200 hover:bg-purple-700 hover:bg-gradient-to-r hover:border-t-2 hover:border-b-2 hover:from-yellow-400 hover:to-red-500 hover:transform hover:text-white hover:scale-105 hover:z-10"
                 >
                   <div className="flex-grow">
-                    <h2 className="flex justify-center gap-2 text-xl font-bold text-pink-600 border-2 rounded-md border-slate-600 p-2 mb-2"><Sparkles className="fill-pink-600"/>{plan.title}</h2>
+                    <h2 className="flex justify-center gap-2 text-xl font-bold text-pink-600 border-2 rounded-md border-slate-600 p-2 mb-2">
+                      <Sparkles className="fill-pink-600" />
+                      {plan.title}
+                    </h2>
                     <h3 className="text-2xl tracking-wide">
-                      <sup className="text-sm">$</sup>
+                      {/* <sup className="text-sm"><IndianRupee /></sup> */}
                       {plan.price}
                       {/* <span className="text-xs">/mo</span> */}
                     </h3>
@@ -124,14 +130,16 @@ const PricingPage = () => {
                       </ul>
                     </div>
                   </div>
-                  <Button
-                    disabled={loading}
-                    className={`${plan.btnColor} flex justify-center mx-auto text-white`}
-                    onClick={onSubscribe}
-                    variant="premium"
-                  >
-                    {loading ? <Loading /> : plan.buttonText}
-                  </Button>
+                  <Link href={isSignedIn ? "/dashboard" : "/signup"}>
+                    <Button
+                      disabled={loading===index}
+                      className={`${plan.btnColor} flex justify-center mx-auto text-white`}
+                      onClick={onSubscribe}
+                      variant="premium"
+                    >
+                      {loading === index ? <Loading /> : plan.buttonText}
+                    </Button>
+                  </Link>
                 </div>
               ))}
             </div>

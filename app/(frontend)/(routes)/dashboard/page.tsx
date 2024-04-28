@@ -49,9 +49,9 @@ const DashboardPage = () => {
   const router = useRouter();
 
   return (
-    <div>
+    <div className="">
       <div className="mb-8 space-y-4">
-        <h2 className="text-2xl py-4 md:text-4xl font-bold text-center">
+        <h2 className="text-2xl pt-24 pb-8 md:text-4xl font-bold text-center">
           Explore the power of Quanta AI
         </h2>
         
@@ -61,7 +61,7 @@ const DashboardPage = () => {
           <Card
             onClick={() => router.push(tool.href)}
             key={tool.href}
-            className="p-4 border-black/5 flex items-center justify-between hover:shadow-md transition cursor-pointer"
+            className="p-4 border-zinc-600 flex items-center justify-between hover:shadow-md transition cursor-pointer"
           >
             <div className="flex items-center gap-x-4">
               <div className={`p-2 w-fit rounded-md ${tool.bgColor}`}>
