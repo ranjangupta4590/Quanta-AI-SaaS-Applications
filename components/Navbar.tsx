@@ -21,8 +21,6 @@ const Navbar = () => {
     return null;
   }
   
-  // const apiLimitCount= await getApiLimitCount();
-  
   return (
     <div className="w-full fixed flex bg-white justify-between md:pr-80 items-center p-3 border-b-2 shadow-lg">
       <div>
@@ -34,7 +32,7 @@ const Navbar = () => {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="p-0">
-            <Sidebar />
+            <Sidebar apiLimitCount={0} isPro={false} />
           </SheetContent>
         </Sheet>
       </div>

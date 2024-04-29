@@ -128,7 +128,6 @@ const Sidebar = ({ apiLimitCount = 0 ,isPro=false}: SidebarProps) => {
             <Button onClick={proModal.onOpen} className="w-full" variant="premium">
             Upgrade to Plus
               <Sparkles   className="w-4 h-4 ml-2 fill-white" />
-              {/* <Zap className="w-4 h-4 ml-2 fill-white" /> */}
             </Button>
           </CardContent>
         </Card>
