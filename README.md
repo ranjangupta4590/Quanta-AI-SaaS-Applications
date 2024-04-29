@@ -1,36 +1,92 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Quanta AI
 
-## Getting Started
+Welcome to Quanta AI, a SaaS application designed to streamline your content generation needs. Quanta AI utilizes cutting-edge technologies to offer features such as chat, code, image, and video generation, powered by the OpenAI API. With seamless integration of Next.js, Shadcn for UI styling, Postgrey for the database, Prisma for ORM, Clerk for authentication, Crisp for chat support, and Stripe for payment processing, Quanta AI delivers a comprehensive solution for content creators.
 
-First, run the development server:
+## Live Demo
+
+Check out the live demo of Quanta AI [Website Link](https://quanta-ai--beta.vercel.app/).
+
+## Usage
+
+1. Sign up for an account using Clerk authentication.
+2. Explore the various content generation features.
+3. Enjoy 10 free trials during the trial period.
+4. Choose a subscription plan and proceed with payment using Stripe.
+5. Access premium features based on your subscription tier.
+
+## Features
+
+- Chat generation
+- Code generation
+- Image generation
+- Video generation
+- Secure login and signup authentication
+- Trial period with 10 free trials
+- Subscription-based model with four pricing tiers
+- Stripe integration for payment processing
+
+## Tech Stack
+
+- Next.js
+- Prisma
+- PostgreSQL
+- Stripe
+- Clerk
+- Crisp
+- Shadcn
+- TypeScript
+- Zod
+- TailwindCSS
+
+## Installation
+
+Follow these steps to set up Quanta AI locally:
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/your-username/quanta-ai.git
+```
+
+2. Navigate to the project directory:
+
+```bash
+cd quanta-ai
+```
+
+3. Install dependencies:
+
+```bash
+npm install
+```
+
+4. Set up environment variables:
+
+   Create a `.env` file in the root directory and add the following:
+
+   ```plaintext
+   NEXT_PUBLIC_OPENAI_API_KEY=your_openai_api_key
+   NEXT_PUBLIC_STRIPE_PUBLIC_KEY=your_stripe_public_key
+   STRIPE_SECRET_KEY=your_stripe_secret_key
+   ```
+
+5. Run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+6. Visit `http://localhost:3000` in your browser to access Quanta AI.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Contributing
 
-## Learn More
+We welcome contributions from the community! Feel free to submit bug reports, feature requests, or pull requests through GitHub.
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Thank you for choosing Quanta AI! We hope you find it useful for your content generation needs. If you have any feedback or suggestions, we'd love to hear from you.
