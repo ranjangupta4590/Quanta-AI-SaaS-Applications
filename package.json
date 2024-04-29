@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "postinstall":"prisma generate"
+    "postinstall": "prisma generate"
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.9",
@@ -21,6 +21,7 @@
     "@radix-ui/react-slot": "^1.0.2",
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
+    "clipboard-copy": "^4.0.1",
     "clsx": "^2.1.0",
     "crisp-sdk-web": "^1.0.25",
     "lucide-react": "^0.359.0",

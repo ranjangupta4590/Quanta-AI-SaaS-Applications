@@ -17,6 +17,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import ReactMarkdown from "react-markdown";
 import Loading from "@/components/ui/Loading";
 import { useProModal } from "@/hooks/proModal";
+import copy from 'clipboard-copy';
 
 const CodePage = () => {
   const router = useRouter();
@@ -78,6 +79,7 @@ const CodePage = () => {
       router.refresh();
     }
   };
+  
 
   return (
     <>
@@ -118,13 +120,14 @@ const CodePage = () => {
                         pre: ({ node, ...props }) => (
                           <div className="relative overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg z-0">
                             <button
-                              onClick={() => {
-                                navigator.clipboard.writeText(
-                                  props.children.props.children.toString()
-                                );
-                                setCopied("Copied!");
-                                setTimeout(() => setCopied("Copy"), 500);
-                              }}
+                              // onClick={() => {
+                              //   navigator.clipboard.writeText(
+                              //     props.children?.toString() || ""
+                              //   );
+                              //   setCopied("Copied!");
+                              //   setTimeout(() => setCopied("Copy"), 500);
+                              // }}
+                              
                               className="absolute flex  top-2 right-2 bg-gray-400 hover:bg-gray-400 text-gray-800 px-2 py-1/2 gap-1 rounded"
                             >
                               <ClipboardList className="h-4 w-4 mt-1" />
