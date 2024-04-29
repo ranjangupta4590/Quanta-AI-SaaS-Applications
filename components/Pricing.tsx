@@ -32,7 +32,8 @@ const plans = [
   },
   {
     title: "Startup",
-    price: "₹199/mo",
+    // price: "₹199/mo",
+    price: "$19/mo",
     visits: "Everything in Free",
     features: [
       //   "20,000 tokens",
@@ -46,7 +47,8 @@ const plans = [
   },
   {
     title: "Premium",
-    price: "₹399/mo",
+    price: "$99/mo",
+    // price: "₹399/mo",
     visits: "Everything in Startup",
     features: [
       "Access to our most capable model generation.",
@@ -58,7 +60,7 @@ const plans = [
   },
   {
     title: "Annual",
-    price: "₹1499/year",
+    price: "$199/year",
     visits: "Everything in Premium",
     features: [
       "Access to our most capable model generation.",
