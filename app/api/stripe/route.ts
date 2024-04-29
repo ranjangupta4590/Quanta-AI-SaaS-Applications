@@ -37,12 +37,12 @@ try {
         line_items: [
             {
                 price_data:{
-                    currency:"INR",
+                    currency:"USD",
                     product_data:{
                         name:"Quanta Plus",
                         description:"Access to all features of Quanta AI with unlimited Generations",
                     },
-                    unit_amount:199*100, // INR per month
+                    unit_amount:19*100, // INR per month
                     recurring: {interval:"month"},
                 },
                 quantity:1,
