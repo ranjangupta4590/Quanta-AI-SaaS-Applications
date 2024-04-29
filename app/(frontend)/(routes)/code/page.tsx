@@ -1,5 +1,7 @@
 "use client";
 
+import { useRef } from "react";
+
 import Heading from "@/components/Heading";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
@@ -17,13 +19,16 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import ReactMarkdown from "react-markdown";
 import Loading from "@/components/ui/Loading";
 import { useProModal } from "@/hooks/proModal";
-import copy from 'clipboard-copy';
+
+import copy from "copy-to-clipboard";
 
 const CodePage = () => {
   const router = useRouter();
   const { user } = useUser();
   const proModal = useProModal();
-  
+
+  const textRef = useRef(null);
+
   const [copied, setCopied] = useState("Copy");
   const [messages, setMessages] = useState<any[]>([]);
 
@@ -79,7 +84,18 @@ const CodePage = () => {
       router.refresh();
     }
   };
-  
+
+  const handleCopy = () => {
+    if (textRef.current) {
+      const textToCopy = (textRef.current as HTMLDivElement).textContent;
+
+      if (textToCopy) {
+        copy(textToCopy);
+        setCopied("Copied!");
+        setTimeout(() => setCopied("Copy"), 500);
+      }
+    }
+  };
 
   return (
     <>
@@ -120,20 +136,13 @@ const CodePage = () => {
                         pre: ({ node, ...props }) => (
                           <div className="relative overflow-auto w-full my-2 bg-black/10 p-2 rounded-lg z-0">
                             <button
-                              // onClick={() => {
-                              //   navigator.clipboard.writeText(
-                              //     props.children?.toString() || ""
-                              //   );
-                              //   setCopied("Copied!");
-                              //   setTimeout(() => setCopied("Copy"), 500);
-                              // }}
-                              
+                              onClick={handleCopy}
                               className="absolute flex  top-2 right-2 bg-gray-400 hover:bg-gray-400 text-gray-800 px-2 py-1/2 gap-1 rounded"
                             >
                               <ClipboardList className="h-4 w-4 mt-1" />
                               {copied}
                             </button>
-                            <pre {...props} />
+                            <pre {...props} ref={textRef} />
                           </div>
                         ),
                         code: ({ node, ...props }) => (
@@ -199,7 +208,7 @@ const CodePage = () => {
                 disabled={isLoading}
                 size="icon"
               >
-                {isLoading?<Loading/>:<ArrowUp />}
+                {isLoading ? <Loading /> : <ArrowUp />}
               </Button>
             </div>
           </form>
